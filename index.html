@@ -1364,7 +1364,7 @@
   function drawBrushStroke(x1, y1, x2, y2) {
     if (!brushCtx) return;
 
-    // Soft pastel purple/lavender brush, similar to the blur ellipses but slightly darker
+    // Soft pastel purple
     brushCtx.beginPath();
     brushCtx.moveTo(x1, y1);
     brushCtx.lineTo(x2, y2);
@@ -1375,7 +1375,7 @@
     brushCtx.filter = 'blur(60px)';
     brushCtx.stroke();
 
-    // Second pass for more visible core
+    /* // Second pass for more visible core
     brushCtx.beginPath();
     brushCtx.moveTo(x1, y1);
     brushCtx.lineTo(x2, y2);
@@ -1387,7 +1387,7 @@
     brushCtx.stroke();
     // Reset filter
     brushCtx.filter = 'none';
-  }
+  } */
 
   // Resize handler
   window.addEventListener('resize', () => {
