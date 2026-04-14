@@ -114,18 +114,17 @@
       flex-direction: column;
       justify-content: center;
       padding: 60px 80px 80px;
-      overflow: hidden;
     }
 
     /* Background blur ellipses - recreated from Figma */
     .hero-bg {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: -150px;
+      left: -150px;
+      right: -150px;
+      bottom: -150px;
       pointer-events: none;
-      overflow: hidden;
+      overflow: visible;
       z-index: 0;
     }
 
@@ -304,14 +303,14 @@
     /* ===== ABOUT PAGE ===== */
     .about-hero {
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .about-hero .hero-bg {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: -150px; left: -150px; right: -150px; bottom: -150px;
       pointer-events: none;
-      overflow: hidden;
+      overflow: visible;
       z-index: 0;
     }
 
@@ -744,6 +743,7 @@
       .hero-section {
         padding: 60px 24px 40px;
         min-height: auto;
+        overflow: visible;
       }
 
       .hero-content h1 {
