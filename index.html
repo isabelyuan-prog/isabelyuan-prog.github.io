@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== RESET & BASE ===== */
+    /* Reset & base */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -28,7 +28,7 @@
       line-height: 1.6;
     }
 
-    /* ===== PAGE SYSTEM ===== */
+    /* Page system */
     .page {
       display: none;
       min-height: 100vh;
@@ -40,7 +40,7 @@
       display: flex;
     }
 
-    /* ===== NAVBAR ===== */
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -104,7 +104,7 @@
       transform: translateY(-1px);
     }
 
-    /* ===== HERO SECTION (HOME) ===== */
+    /* Home hero */
     .hero-section {
       position: relative;
       min-height: 80vh;
@@ -114,7 +114,7 @@
       padding: 80px 80px 60px;
     }
 
-    /* Background blur ellipses - page-level so they bleed into projects */
+    /* Bg blur blobs */
     .hero-bg {
       position: absolute;
       top: -100px;
@@ -130,7 +130,7 @@
       border-radius: 50%;
     }
 
-  /* Ellipse 1 - small, bottom-left, solid purple */
+  /* bottom left */
     .blur-ellipse-1 {
       width: 200px;
       height: 200px;
@@ -141,7 +141,7 @@
       opacity: 0.65;
     }
 
-    /* Ellipse 2 - large center, gradient, goes half off top */
+    /* top middle */
     .blur-ellipse-2 {
       width: 881px;
       height: 881px;
@@ -153,7 +153,7 @@
       opacity: 0.65;
     }
 
-    /* Ellipse 3 - medium, bottom-right, behind Lose It card */
+    /* bottom right */
     .blur-ellipse-3 {
       width: 495px;
       height: 495px;
@@ -164,7 +164,7 @@
       opacity: 0.65;
     }
 
-    /* Interactive brush canvas */
+    /* interactive brush */
     #brush-canvas {
       position: absolute;
       top: 0;
@@ -198,7 +198,7 @@
       font-weight: 400;
     }
 
-    /* ===== PROJECTS SECTION ===== */
+    /* Proejcts */
     .projects-section {
       padding: 60px 80px 80px;
       max-width: 900px;
@@ -219,7 +219,7 @@
       gap: 32px;
     }
 
-    /* Project Card */
+    /* project cards */
     .project-card {
       position: relative;
       border-radius: 16px;
@@ -247,7 +247,7 @@
       display: none;
     }
 
-    /* Coming Soon cards (Jetroe, Clean Your Room) */
+    /* coming soon cards */
     .project-card.coming-soon {
       cursor: default;
     }
@@ -258,9 +258,11 @@
 
     .project-card.coming-soon:hover .card-hover {
       display: block;
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
     }
 
-    /* ===== FOOTER ===== */
+    /* footer */
     .footer {
       background: #1a1a5e;
       padding: 28px 48px;
@@ -302,7 +304,7 @@
       height: auto;
     }
 
-    /* ===== ABOUT PAGE ===== */
+    /* about */
     .about-hero {
       position: relative;
       overflow: hidden;
@@ -368,12 +370,12 @@
       max-width: 900px;
     }
 
-    /* ===== CASE STUDY PAGES (Lose It! + COT) ===== */
+    /* case studies */
     .case-study-page {
       flex: 1;
     }
 
-    /* Lose It! Header */
+    /* lose it header */
     .loseit-header {
       width: 100%;
       overflow: hidden;
@@ -486,7 +488,7 @@
       color: #F4C345;
     }
 
-    /* Highlighted text (orange for Lose It!) */
+    /* lose it text */
     .highlight-orange {
       color: #E8922A;
       font-weight: 700;
@@ -518,7 +520,7 @@
       font-weight: 800;
     }
 
-    /* Blue callout for COT */
+    /* blue callout for COT */
     .callout-box-blue {
       background: #1a1a5e;
       color: white;
@@ -541,7 +543,7 @@
       margin-bottom: 8px;
     }
 
-    /* Budget / Weekly Rate tabs */
+    /* image tabs (budget/weekly rate) */
     .tab-section {
       margin: 24px 0 32px;
     }
@@ -552,7 +554,7 @@
       margin-bottom: 0;
     }
 
-    /* Side-by-side stat */
+    /* Stats comparison */
     .stat-row {
       display: flex;
       gap: 32px;
@@ -582,7 +584,7 @@
       margin: 16px 0;
     }
 
-    /* Product Idea section */
+    /* Product idea */
     .product-idea-layout {
       display: flex;
       gap: 32px;
@@ -630,7 +632,7 @@
       margin: 32px 0;
     }
 
-    /* COT Page */
+    /* COT page */
     .cot-hero {
       position: relative;
       height: 400px;
@@ -726,12 +728,12 @@
       border-radius: 6px;
     }
 
-    /* Afterthoughts / Learning Outcomes */
+    /* Afterthoughts */
     .case-study-body h2.section-end {
       margin-top: 56px;
     }
 
-    /* ===== MOBILE RESPONSIVE ===== */
+    /* Mobile responsive */
     @media (max-width: 768px) {
       .navbar {
         padding: 16px 20px;
@@ -823,7 +825,7 @@
       }
     }
 
-    /* ===== ANIMATIONS ===== */
+    /* Animations */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -847,7 +849,7 @@
 
 <body>
 
-<!-- ==================== HOME + PROJECTS PAGE ==================== -->
+<!-- Home + Projects page -->
 <div class="page active" id="page-home">
       <div class="hero-bg">
       <div class="blur-ellipse blur-ellipse-1"></div>
@@ -855,7 +857,7 @@
       <div class="blur-ellipse blur-ellipse-3"></div>
     </div>
 
-  <!-- NAVBAR -->
+  <!-- navbar -->
   <header class="navbar">
     <div class="logo-link" onclick="navigateTo('home')">
       <img src="assets/nav/logo-header.png" alt="IY Logo">
@@ -868,7 +870,7 @@
     </nav>
   </header>
 
-  <!-- HERO -->
+  <!-- hero -->
   <section class="hero-section" id="home-top">
     <canvas id="brush-canvas"></canvas>
     <div class="hero-content">
@@ -877,7 +879,7 @@
     </div>
   </section>
 
-  <!-- PROJECTS -->
+  <!-- proejcts -->
   <section class="projects-section" id="projects-section">
     <h2>What I've been working on...</h2>
     <div class="projects-grid">
@@ -885,19 +887,16 @@
       <div class="project-card" onclick="navigateTo('loseit')">
         <img class="card-default" src="assets/home/Lose-it.png" alt="Lose It! Project">
       </div>
-
-      <!-- Canada Online Tutoring -->
+      <!-- COT -->
       <div class="project-card" onclick="navigateTo('cot')">
         <img class="card-default" src="assets/home/Canada-online-tutoring.png" alt="Canada Online Tutoring">
       </div>
-
-      <!-- Jetroe Castr App (Coming Soon) -->
+      <!-- Jetroe -->
       <div class="project-card coming-soon">
         <img class="card-default" src="assets/home/Jetroe.png" alt="Jetroe Castr App">
         <img class="card-hover" src="assets/home/Jetroe-hover.png" alt="Jetroe - Coming Soon">
       </div>
-
-      <!-- Clean Your Room (Coming Soon) -->
+      <!-- Clean Your Room -->
       <div class="project-card coming-soon">
         <img class="card-default" src="assets/home/Clean-Your-Room.png" alt="Clean Your Room">
         <img class="card-hover" src="assets/home/Clean-Your-Room-hover.png" alt="Clean Your Room - Coming Soon">
@@ -905,7 +904,7 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- footer -->
   <footer class="footer">
     <div class="footer-logo" onclick="navigateTo('home')">
       <img src="assets/nav/logo-header.png" alt="IY Logo">
@@ -921,8 +920,7 @@
   </footer>
 </div>
 
-
-<!-- ==================== ABOUT PAGE ==================== -->
+<!-- About page -->
 <div class="page" id="page-about" style="position: relative;">
     <div class="hero-bg" style="bottom: 75px;">
     <div class="blur-ellipse blur-ellipse-1"></div>
@@ -953,9 +951,8 @@
     </div>
   <div class="about-bio">
     <p>I graduated with an HBA from Ivey Business School in 2025 and am on my way to completing my BSc in Computer Science at Western University. I have worked as an accountant at BDO Canada and as a finance product analyst at IRCC, where I gained valuable skills in data analysis and translating business needs into requirements for developers. While I enjoyed working in both roles, I found myself looking for something more creative. Now, I am starting my journey into UX and product design!</p>
-
+    
     <p>I was born and raised in Ottawa, Ontario surrounded by national parks and ski hills, and spent much of my childhood outdoors. I also love baking, woodworking, fashion, blueprinting, hiking, running, and tennis.</p>
-
   </div>
 
   <footer class="footer">
@@ -973,8 +970,7 @@
   </footer>
 </div>
 
-
-<!-- ==================== LOSE IT! PAGE ==================== -->
+<!-- Lose It! page -->
 <div class="page" id="page-loseit">
 
   <header class="navbar">
@@ -990,7 +986,7 @@
   </header>
 
   <div class="case-study-page">
-    <!-- Header Banner -->
+    <!-- header banner -->
     <div class="loseit-header">
       <img src="assets/loseit/header.png" alt="Lose It! Header">
     </div>
@@ -1000,7 +996,7 @@
       <a class="view-proto-btn" href="https://www.figma.com/proto/wnO287pc1dHchI9FfBTd4u/Final-Prototype?page-id=98%3A1601&node-id=98-1602&viewport=118%2C301%2C0.11&t=otIvFpGjaW5fdXwL-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=98%3A1769" target="_blank" rel="noopener">
         <img src="assets/loseit/view-prototype-btn-1.png" alt="View Prototype">
       </a>
-
+      
       <h2>Project Overview</h2>
       <p>Lose It! is a calorie tracking app whose mission is to mobilize the world to achieve a health weight. They serve over 50 million users, including 3.4 million monthly active users through a freemium model.</p>
 
@@ -1116,7 +1112,7 @@
 </div>
 
 
-<!-- ==================== CANADA ONLINE TUTORING PAGE ==================== -->
+<!-- COT page -->
 <div class="page" id="page-cot">
 
   <header class="navbar">
@@ -1132,7 +1128,7 @@
   </header>
 
   <div class="case-study-page">
-    <!-- Hero with background image -->
+    <!-- Hero -->
     <div class="cot-hero">
       <img class="cot-hero-bg" src="assets/cot/cot-hero.png" alt="Canada Online Tutoring">
       <div class="cot-hero-content">
@@ -1222,9 +1218,9 @@
 </div>
 
 
-<!-- ==================== JAVASCRIPT ==================== -->
+<!-- Javascript -->
 <script>
-  // ===== NAVIGATION =====
+  // Nav
   function navigateTo(page, scrollTarget) {
     // Hide all pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1256,7 +1252,7 @@
 
     targetPage.classList.add('active');
 
-    // Always scroll to top first, then to target if needed
+    // Scroll to top first, target second
     window.scrollTo(0, 0);
 
     if (scrollTo) {
@@ -1271,7 +1267,7 @@
     // Update active nav links
     updateNavLinks(page);
 
-    // Reinitialize brush canvas if going home
+    // Reset brush when going back to home
     if (page === 'home' || page === 'projects') {
       setTimeout(initBrushCanvas, 100);
     }
@@ -1287,8 +1283,7 @@
     });
   }
 
-
-  // ===== INTERACTIVE BRUSH ON HERO =====
+  // Brush
   let brushCanvas, brushCtx;
   let isDrawing = false;
   let lastX, lastY;
@@ -1374,10 +1369,10 @@
     brushCtx.moveTo(x1, y1);
     brushCtx.lineTo(x2, y2);
     brushCtx.strokeStyle = 'rgba(195, 175, 230, 0.12)';
-    brushCtx.lineWidth = 80;
+    brushCtx.lineWidth = 60;
     brushCtx.lineCap = 'round';
     brushCtx.lineJoin = 'round';
-    brushCtx.filter = 'blur(25px)';
+    brushCtx.filter = 'blur(60px)';
     brushCtx.stroke();
 
     // Second pass for more visible core
@@ -1385,26 +1380,23 @@
     brushCtx.moveTo(x1, y1);
     brushCtx.lineTo(x2, y2);
     brushCtx.strokeStyle = 'rgba(210, 190, 245, 0.08)';
-    brushCtx.lineWidth = 120;
+    brushCtx.lineWidth = 80;
     brushCtx.lineCap = 'round';
     brushCtx.lineJoin = 'round';
-    brushCtx.filter = 'blur(40px)';
+    brushCtx.filter = 'blur(80px)';
     brushCtx.stroke();
-
     // Reset filter
     brushCtx.filter = 'none';
   }
 
-
-  // ===== RESIZE HANDLER =====
+  // Resize handler
   window.addEventListener('resize', () => {
     if (document.getElementById('page-home').classList.contains('active')) {
       initBrushCanvas();
     }
   });
 
-
-  // ===== INIT =====
+  // Init
   document.addEventListener('DOMContentLoaded', () => {
     initBrushCanvas();
   });
