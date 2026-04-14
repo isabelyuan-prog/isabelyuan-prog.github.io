@@ -3,30 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portfolio</title>
+  <title>Isabel Yuan — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * {
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #ffffff;
-      color: #222;
+    html {
+      scroll-behavior: smooth;
     }
 
+    body {
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #222;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ===== PAGE SYSTEM ===== */
+    .page {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* ===== NAVBAR ===== */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 28px 48px;
+      padding: 24px 48px;
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
     }
 
-    .image-container img {
-      width: 25px;
+    .navbar .logo-link {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar .logo-link img {
+      width: 28px;
       height: auto;
       display: block;
     }
@@ -40,61 +75,1341 @@
     .nav-links a {
       text-decoration: none;
       color: #222;
-      font-size: 20px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s ease;
     }
 
-    .contact-btn {
+    .nav-links a:hover {
+      color: #1f2390;
+    }
+
+    .nav-links a.active-link {
+      color: #1f2390;
+    }
+
+    .nav-links .contact-btn {
       background: #1f2390;
       color: white !important;
-      padding: 8px 16px;
-      letter-spacing: 1px;
-      font-size: 12px;
+      padding: 10px 20px;
+      letter-spacing: 0.5px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 2px;
+      transition: background 0.2s ease, transform 0.15s ease;
     }
 
-    .hero {
-      height: calc(100vh - 100px);
+    .nav-links .contact-btn:hover {
+      background: #161a6e;
+      transform: translateY(-1px);
+    }
+
+    /* ===== HERO SECTION (HOME) ===== */
+    .hero-section {
+      position: relative;
+      min-height: calc(100vh - 80px);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
+      padding: 80px 80px 60px;
+      overflow: hidden;
     }
 
-    .hero h1 {
-      font-size: 64px;
-      font-weight: 700;
+    /* Background blur ellipses - recreated from Figma */
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .blur-ellipse {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.65;
+    }
+
+    /* Ellipse 1 - top-left, pastel pink/peach */
+    .blur-ellipse-1 {
+      width: 495px;
+      height: 495px;
+      top: -80px;
+      left: -50px;
+      background: linear-gradient(135deg, #F6CAE9 10%, #D3C2FF 41%, #B5D6F9 58%, #F6CAE9 100%);
+    }
+
+    /* Ellipse 2 - center-top, lavender/blue */
+    .blur-ellipse-2 {
+      width: 495px;
+      height: 495px;
+      top: -120px;
+      left: 30%;
+      background: linear-gradient(135deg, #B8DAF5 6%, #D3C2FF 31%, #E9C4E5 80%, #C5DFF4 100%);
+    }
+
+    /* Ellipse 3 - right side, soft purple/green */
+    .blur-ellipse-3 {
+      width: 881px;
+      height: 881px;
+      top: -200px;
+      right: -200px;
+      background: linear-gradient(135deg, #F6CAE9 10%, #D3C2FF 41%, #B5D6F9 58%, #F6CAE9 100%);
+    }
+
+    /* Interactive brush canvas */
+    #brush-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      cursor: crosshair;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero-content h1 {
+      font-size: 56px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+      line-height: 1.15;
+    }
+
+    .hero-content p {
+      font-size: 24px;
+      color: #333;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+
+    /* ===== PROJECTS SECTION ===== */
+    .projects-section {
+      padding: 60px 80px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .projects-section h2 {
+      font-size: 24px;
+      font-weight: 400;
+      font-style: italic;
+      color: #222;
+      margin-bottom: 40px;
+    }
+
+    .projects-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Project Card */
+    .project-card {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    .project-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .project-card .card-default {
+      display: block;
+    }
+
+    .project-card .card-hover {
+      display: none;
+    }
+
+    /* Coming Soon cards (Jetroe, Clean Your Room) */
+    .project-card.coming-soon {
+      cursor: default;
+    }
+
+    .project-card.coming-soon:hover .card-default {
+      display: none;
+    }
+
+    .project-card.coming-soon:hover .card-hover {
+      display: block;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      background: #1a1a5e;
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .footer .footer-logo {
+      cursor: pointer;
+    }
+
+    .footer .footer-logo img {
+      width: 28px;
+      height: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
+
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-socials a {
+      display: flex;
+      align-items: center;
+      transition: opacity 0.2s ease;
+    }
+
+    .footer-socials a:hover {
+      opacity: 0.7;
+    }
+
+    .footer-socials img {
+      width: 24px;
+      height: auto;
+    }
+
+    /* ===== ABOUT PAGE ===== */
+    .about-hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-hero .hero-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .about-content {
+      position: relative;
+      z-index: 2;
+      padding: 80px 80px 40px;
+    }
+
+    .about-top {
+      display: flex;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 60px;
+    }
+
+    .about-photo {
+      width: 320px;
+      min-width: 320px;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .about-intro h1 {
+      font-size: 48px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .about-intro p.subtitle {
+      font-size: 26px;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    .about-bio {
+      padding: 0 80px 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .about-bio p {
+      font-size: 20px;
+      color: #222;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      max-width: 900px;
+    }
+
+    /* ===== CASE STUDY PAGES (Lose It! + COT) ===== */
+    .case-study-page {
+      flex: 1;
+    }
+
+    /* Lose It! Header */
+    .loseit-header {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .loseit-header img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .grey {
+      color: #595959;
+    }
+
+    .case-study-body {
+      padding: 40px 80px 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .case-study-body .cs-subtitle {
+      font-size: 18px;
+      font-style: italic;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .case-study-body .view-proto-btn {
+      display: inline-block;
+      margin-bottom: 40px;
+    }
+
+    .case-study-body .view-proto-btn img {
+      height: 42px;
+      width: auto;
+      display: block;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .case-study-body .view-proto-btn:hover img {
+      transform: scale(1.03);
+      filter: brightness(1.05);
+    }
+
+    .case-study-body h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #595959;
+      margin-bottom: 16px;
+      margin-top: 48px;
+    }
+
+    .case-study-body h2:first-of-type {
+      margin-top: 0;
+    }
+
+    .case-study-body p {
+      font-size: 17px;
+      line-height: 1.75;
+      color: #333;
       margin-bottom: 16px;
     }
 
-    .hero p {
-      font-size: 22px;
-      color: #444;
+    .case-study-body ol, .case-study-body ul {
+      padding-left: 24px;
+      margin-bottom: 20px;
     }
+
+    .case-study-body li {
+      font-size: 17px;
+      line-height: 1.75;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .case-study-body .cs-image {
+      width: 100%;
+      margin: 24px 0 32px;
+      border-radius: 8px;
+    }
+
+    .case-study-body .cs-image-small {
+      max-width: 500px;
+      margin: 24px 0 32px;
+    }
+
+    .case-study-body .cs-image-pair {
+      display: flex;
+      gap: 24px;
+      margin: 24px 0 32px;
+      align-items: flex-start;
+    }
+
+    .case-study-body .cs-image-pair img {
+      flex: 1;
+      min-width: 0;
+      border-radius: 8px;
+    }
+
+    .green {
+      color: #72A84D;
+    }
+
+    .red {
+      color: #E05340;
+    }
+
+    .yellow {
+      color: #F4C345;
+    }
+
+    /* Highlighted text (orange for Lose It!) */
+    .highlight-orange {
+      color: #E8922A;
+      font-weight: 700;
+    }
+
+    .underline-orange {
+      text-decoration: underline;
+      text-decoration-color: #E8922A;
+      text-underline-offset: 3px;
+    }
+
+    /* Callout box */
+    .callout-box {
+      background: #E8922A;
+      color: white;
+      padding: 28px 32px;
+      border-radius: 8px;
+      margin: 32px 0;
+      text-align: center;
+    }
+
+    .callout-box p {
+      color: white !important;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .callout-box strong {
+      font-weight: 800;
+    }
+
+    /* Blue callout for COT */
+    .callout-box-blue {
+      background: #1a1a5e;
+      color: white;
+      padding: 32px 36px;
+      border-radius: 12px;
+      margin: 32px 0;
+    }
+
+    .callout-box-blue h3 {
+      font-size: 24px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .callout-box-blue li {
+      color: white;
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    /* Budget / Weekly Rate tabs */
+    .tab-section {
+      margin: 24px 0 32px;
+    }
+
+    .tab-section .tab-header {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+    }
+
+    /* Side-by-side stat */
+    .stat-row {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      margin: 24px 0 32px;
+    }
+
+    .stat-row .stat-text {
+      flex: 1;
+    }
+
+    .stat-row .stat-text h3 {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.35;
+      margin-bottom: 0;
+    }
+
+    .stat-row img {
+      flex: 1;
+      max-width: 50%;
+    }
+
+    /* User quote */
+    .user-quote {
+      font-style: italic;
+      margin: 16px 0;
+    }
+
+    /* Product Idea section */
+    .product-idea-layout {
+      display: flex;
+      gap: 32px;
+      margin: 24px 0;
+    }
+
+    .product-idea-layout .idea-text {
+      flex: 0 0 300px;
+    }
+
+    .product-idea-layout .idea-text h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #1E6CB2;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      margin-top: 20px;
+    }
+
+    .product-idea-layout .idea-text h4:first-child {
+      margin-top: 0;
+    }
+
+    .product-idea-layout .idea-text p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .product-idea-layout .idea-images {
+      display: flex;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .product-idea-layout .idea-images img {
+      flex: 1;
+      min-width: 0;
+      border-radius: 8px;
+      max-height: 500px;
+      object-fit: contain;
+    }
+
+    .proto-btn-center {
+      text-align: center;
+      margin: 32px 0;
+    }
+
+    /* COT Page */
+    .cot-hero {
+      position: relative;
+      height: 400px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .cot-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 1;
+    }
+
+    .cot-hero img.cot-hero-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .cot-hero-content {
+      position: relative;
+      z-index: 2;
+      color: white;
+    }
+
+    .cot-hero-content h1 {
+      font-size: 44px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .cot-hero-content p {
+      font-size: 18px;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    .cot-hero-content .view-proto-btn img {
+      height: 42px;
+    }
+
+    /* COT comparison section */
+    .comparison-section {
+      margin: 40px 0;
+    }
+
+    .comparison-section h3 {
+      font-size: 22px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 24px;
+      color: #888;
+    }
+
+    .comparison-section h3.current-pages {
+      color: #aaa;
+    }
+
+    .comparison-section h3.redesigned-pages {
+      color: #aaa;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+      align-items: start;
+    }
+
+    .comparison-grid img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .comparison-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .comparison-column img {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    /* Afterthoughts / Learning Outcomes */
+    .case-study-body h2.section-end {
+      margin-top: 56px;
+    }
+
+    /* ===== MOBILE RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 16px 20px;
+      }
+
+      .nav-links {
+        gap: 20px;
+      }
+
+      .nav-links a {
+        font-size: 14px;
+      }
+
+      .hero-section {
+        padding: 60px 24px 40px;
+        min-height: auto;
+      }
+
+      .hero-content h1 {
+        font-size: 36px;
+      }
+
+      .hero-content p {
+        font-size: 18px;
+      }
+
+      .projects-section {
+        padding: 40px 24px;
+      }
+
+      .about-content {
+        padding: 40px 24px;
+      }
+
+      .about-top {
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .about-photo {
+        width: 100%;
+        min-width: unset;
+        height: 300px;
+      }
+
+      .about-intro h1 {
+        font-size: 36px;
+      }
+
+      .about-bio {
+        padding: 0 24px 60px;
+      }
+
+      .case-study-body {
+        padding: 32px 24px 60px;
+      }
+
+      .product-idea-layout {
+        flex-direction: column;
+      }
+
+      .product-idea-layout .idea-text {
+        flex: unset;
+      }
+
+      .stat-row {
+        flex-direction: column;
+      }
+
+      .stat-row img {
+        max-width: 100%;
+      }
+
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .blur-ellipse-1 {
+        width: 300px;
+        height: 300px;
+      }
+      .blur-ellipse-2 {
+        width: 300px;
+        height: 300px;
+      }
+      .blur-ellipse-3 {
+        width: 500px;
+        height: 500px;
+      }
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
   </style>
 </head>
 
 <body>
 
-  <header class="navbar">
-    <div class="image-container">
-	<img src="assets/logo.png" alt="Logo">
-    </div>
+<!-- ==================== HOME + PROJECTS PAGE ==================== -->
+<div class="page active" id="page-home">
 
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo-link" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
     <nav class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Projects</a>
-      <a class="contact-btn" href="mailto:isabel.g.yuan@gmail.com?subject=Portfolio%20Inquiry">
-        Contact
-      </a>
+      <a onclick="navigateTo('home')" class="active-link" data-nav="home">Home</a>
+      <a onclick="navigateTo('projects')" data-nav="projects">Projects</a>
+      <a onclick="navigateTo('about')" data-nav="about">About</a>
+      <a class="contact-btn" href="mailto:isabel.g.yuan@gmail.com">Contact</a>
     </nav>
   </header>
 
-  <main class="hero">
-    <h1>Portfolio currently being updated.</h1>
-    <p>Coming soon April 15, 2026.</p>
-  </main>
+  <!-- HERO -->
+  <section class="hero-section" id="home-top">
+    <div class="hero-bg">
+      <div class="blur-ellipse blur-ellipse-1"></div>
+      <div class="blur-ellipse blur-ellipse-2"></div>
+      <div class="blur-ellipse blur-ellipse-3"></div>
+    </div>
+    <canvas id="brush-canvas"></canvas>
+    <div class="hero-content">
+      <h1>Hi, I'm Isabel 👋</h1>
+      <p>I design and build tech products, using my background in business and computer science to create meaningful and impactful solutions.</p>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects-section" id="projects-section">
+    <h2>What I've been working on...</h2>
+    <div class="projects-grid">
+      <!-- Lose It! -->
+      <div class="project-card" onclick="navigateTo('loseit')">
+        <img class="card-default" src="assets/home/Lose-it.png" alt="Lose It! Project">
+      </div>
+
+      <!-- Canada Online Tutoring -->
+      <div class="project-card" onclick="navigateTo('cot')">
+        <img class="card-default" src="assets/home/Canada-online-tutoring.png" alt="Canada Online Tutoring">
+      </div>
+
+      <!-- Jetroe Castr App (Coming Soon) -->
+      <div class="project-card coming-soon">
+        <img class="card-default" src="assets/home/Jetroe.png" alt="Jetroe Castr App">
+        <img class="card-hover" src="assets/home/Jetroe-hover.png" alt="Jetroe - Coming Soon">
+      </div>
+
+      <!-- Clean Your Room (Coming Soon) -->
+      <div class="project-card coming-soon">
+        <img class="card-default" src="assets/home/Clean-Your-Room.png" alt="Clean Your Room">
+        <img class="card-hover" src="assets/home/Clean-Your-Room-hover.png" alt="Clean Your Room - Coming Soon">
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.linkedin.com/in/isabelyuan" target="_blank" rel="noopener">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:isabel.g.yuan@gmail.com">
+        <svg width="28" height="22" viewBox="0 0 28 22" fill="white"><path d="M2 0C.9 0 0 .9 0 2v18c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2H2zm0 2h24v.01L14 12 2 2.01V2zm0 2.99L14 15l12-10.01V20H2V4.99z"/></svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ==================== ABOUT PAGE ==================== -->
+<div class="page" id="page-about">
+
+  <header class="navbar">
+    <div class="logo-link" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
+    <nav class="nav-links">
+      <a onclick="navigateTo('home')" data-nav="home">Home</a>
+      <a onclick="navigateTo('projects')" data-nav="projects">Projects</a>
+      <a onclick="navigateTo('about')" class="active-link" data-nav="about">About</a>
+      <a class="contact-btn" href="mailto:isabel.g.yuan@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <div class="about-hero">
+    <div class="hero-bg">
+      <div class="blur-ellipse blur-ellipse-1"></div>
+      <div class="blur-ellipse blur-ellipse-2"></div>
+      <div class="blur-ellipse blur-ellipse-3"></div>
+    </div>
+
+    <div class="about-content">
+      <div class="about-top">
+        <img class="about-photo" src="assets/about/Isabel.png" alt="Isabel Yuan">
+        <div class="about-intro">
+          <h1>Hi, I'm Isabel Yuan 👋</h1>
+          <p class="subtitle">I am a business and computer science student who loves all things design and tech.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-bio">
+    <br>
+    <br>
+    <p>I graduated with an HBA from Ivey Business School in 2025 and am on my way to completing my BSc in Computer Science at Western University. I have worked as an accountant at BDO Canada and as a finance product analyst at IRCC, where I gained valuable skills in data analysis and translating business needs into requirements for developers. While I enjoyed working in both roles, I found myself looking for something more creative. Now, I am starting my journey into UX and product design!</p>
+
+    <p>I was born and raised in Ottawa, Ontario surrounded by national parks and ski hills, and spent much of my childhood outdoors. I also love baking, woodworking, fashion, blueprinting, hiking, running, and tennis.</p>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer-logo" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.linkedin.com/in/isabelyuan" target="_blank" rel="noopener">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:isabel.g.yuan@gmail.com">
+        <svg width="28" height="22" viewBox="0 0 28 22" fill="white"><path d="M2 0C.9 0 0 .9 0 2v18c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2H2zm0 2h24v.01L14 12 2 2.01V2zm0 2.99L14 15l12-10.01V20H2V4.99z"/></svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ==================== LOSE IT! PAGE ==================== -->
+<div class="page" id="page-loseit">
+
+  <header class="navbar">
+    <div class="logo-link" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
+    <nav class="nav-links">
+      <a onclick="navigateTo('home')" data-nav="home">Home</a>
+      <a onclick="navigateTo('projects')" data-nav="projects">Projects</a>
+      <a onclick="navigateTo('about')" data-nav="about">About</a>
+      <a class="contact-btn" href="mailto:isabel.g.yuan@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <div class="case-study-page">
+    <!-- Header Banner -->
+    <div class="loseit-header">
+      <img src="assets/loseit/header.png" alt="Lose It! Header">
+    </div>
+
+    <div class="case-study-body">
+      <p class="cs-subtitle">Product management case study</p>
+      <a class="view-proto-btn" href="https://www.figma.com/proto/wnO287pc1dHchI9FfBTd4u/Final-Prototype?page-id=98%3A1601&node-id=98-1602&viewport=118%2C301%2C0.11&t=otIvFpGjaW5fdXwL-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=98%3A1769" target="_blank" rel="noopener">
+        <img src="assets/loseit/view-prototype-btn-1.png" alt="View Prototype">
+      </a>
+
+      <h2>Project Overview</h2>
+      <p>Lose It! is a calorie tracking app whose mission is to mobilize the world to achieve a health weight. They serve over 50 million users, including 3.4 million monthly active users through a freemium model.</p>
+
+      <h2>Problem Space</h2>
+      <p>I interviewed both current and past users of Lose It! and found that most users have either:</p>
+      <ol>
+        <li>Left the app;</li>
+        <li>Are considering switching to a competitor app; or</li>
+        <li>Engaging inconsistently with the app.</li>
+      </ol>
+      <p>This finding is reflected in the numbers.</p>
+
+      <div class="stat-row">
+        <div class="stat-text">
+          <h2 class="grey">Less than <span class="highlight-orange">6% of users</span> who download Lose It! <span class="highlight-orange">are actively using the app</span> each month.</h2>
+        </div>
+        <img src="assets/loseit/6-percent-graph.png" alt="6% active users visualization">
+      </div>
+
+      <p>However, both current and past users still have positive feeling towards Lose It!. Instead, they are leaving because they feel like they've already learned all they need to know about calorie or they felt like they had outgrown the app and that Lose It! no longer aligns with their goals.</p>
+
+      <h2>Design Process</h2>
+      <img class="cs-image" src="assets/loseit/design-process.png" alt="Design Process: empathize, define, ideate, prototype, test">
+
+      <h2>User Insights</h2>
+      <p class="user-quote">"I stopped using Lose It! because <span class="green">I don't want to lose it, I want to gain it!</span>"</p>
+      <p class="user-quote">"<span class="red">When the calorie count goes red</span>, even if I'm only a few calories over, I feel like I failed that day...<span class="red">it makes me want to stop tracking altogether.</span>"</p>
+      <p class="user-quote">"<span class="yellow">I only use the food logging and calorie tracking features</span>...I don't feel the need to use any other feature."</p>
+
+      <div style="display: flex; gap: 32px; align-items: flex-start; margin: 24px 0 32px;">
+        <div style="flex: 1;">
+          <p>For some users, achieving their idea of a healthy weight requires them to gain weight. However, Lose It! doesn't have the gaining option when choosing a daily calorie intake goal. These users now seek alternatives to Lose It! as they feel like they have outgrown the app and their goals have evolved, but Lose It! hasn't grown with them.</p>
+          <p>Multiple users also reported feeling demotivated after seeing the calorie bar turn red, even when they were only slightly over their limit. This often led them to stop tracking or quit the app altogether, making it less likely they would reach their goals and further discouraging them from continuing.</p>
+        </div>
+        <div style="flex: 0 0 280px; display: flex; flex-direction: column; gap: 16px;">
+          <img src="assets/loseit/weekly-rate.png" alt="Weekly rate" style="width: 80%; border-radius: 8px;">
+          <img src="assets/loseit/over-budget.png" alt="Over budget" style="width: 80%; border-radius: 8px;">
+        </div>
+      </div>
+
+      <h2>User Interview Findings</h2>
+      <ol>
+        <li>Users are coming to Lose It! with a goal in mind. Logging meals and tracking calories is just a step to achieve their health or physique goal.</li>
+        <li>Each user defines a "healthy" weight differently. Some want to lose, others want to gain, some want to maintain.</li>
+        <li>Users churn when Lose It! no longer aligns with their goals.</li>
+        <li>Users disengage when they feel demotivated.</li>
+        <li>Users primarily engage with only the logging and calorie tracking features.</li>
+      </ol>
+
+      <div class="callout-box">
+        <p style="font-size: 22px;">Users aren't downloading Lose It! just to track calories—they want to achieve their weight goals to feel healthier, look better, increase energy, and so on. <strong>Every user also has their own vision of what a healthy weight looks like but Lose It! isn't addressing them all.</strong></p>
+      </div>
+
+      <h2>User Journey Map</h2>
+      <img class="cs-image" src="assets/loseit/user-journey-map.png" alt="User Journey Map">
+
+      <div class="callout-box">
+        <p style="font-size: 22px;">There is a <strong>product opportunity</strong> to better align with a wider range of user goals and user behavioural design to keep users engaged and motivated throughout their calorie-tracking journey.</p>
+      </div>
+
+      <h2>UX Flow</h2>
+      <p>After talking to users, I noticed a pattern. People start out motivated, but struggle to stick with tracking over time. Most apps do the basics well, but they can feel rigid. Even going slightly over a goal can feel discouraging, which makes it easier to fall off completely. What users want is something that keeps them accountable but feels more flexible and less punishing.</p>
+      <p>Thus, the tasks "track calories to bulk" and "track calories flexibly" were chosen.</p>
+
+      <img class="cs-image" src="assets/loseit/ux-flow.png" alt="UX Flow">
+
+      <h2>Product Idea</h2>
+      <p>Your goals are evolving—and so is Lose It!, with flexible and additional ways to track calories that better align with your needs.</p>
+
+      <div class="product-idea-layout">
+        <div class="idea-text">
+          <br>
+          <h4>Gain It! Mode</h4>
+          <p>Calorie tracking mode for users who are trying to gain weight.</p>
+
+          <h4>Daily Calorie Range Feature</h4>
+          <p>Users can set a buffer zone (up to +50 calories when cutting or -50 when bulking) where going over/under but within the range turns the daily calorie count yellow instead of red.</p>
+
+          <h4>Revamped Onboarding</h4>
+          <p>Decluttered onboarding process with questions that identify user needs and goals for Lose It! to address.</p>
+        </div>
+        <div class="idea-images">
+          <img src="assets/loseit/prototype-frame-1.png" alt="Gain It mode prototype">
+          <img src="assets/loseit/prototype-frame-2.png" alt="Weekly rate prototype">
+        </div>
+      </div>
+
+      <div class="proto-btn-center">
+        <a class="view-proto-btn" href="https://www.figma.com/proto/wnO287pc1dHchI9FfBTd4u/Final-Prototype?page-id=98%3A1601&node-id=98-1602&viewport=118%2C301%2C0.11&t=otIvFpGjaW5fdXwL-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=98%3A1769" target="_blank" rel="noopener">
+          <img src="assets/loseit/view-prototype-btn2.png" alt="Check out the prototype here!">
+        </a>
+      </div>
+
+      <h2 class="section-end">Afterthoughts</h2>
+      <p>Given the scope of this project, I kept the wireframes and visual design consistent with the existing product. Although I simplified the onboarding process, I would push this further next time by reducing the number of steps users need to complete sign-up.</p>
+      <p>This project showed me the importance of user interviews, from preparing an extensive question bank to asking without leading users to a specific answer. Mapping the user journey also helped me better understand where users disengage and how design and behavioural economics can better support long-term retention.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-logo" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.linkedin.com/in/isabelyuan" target="_blank" rel="noopener">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:isabel.g.yuan@gmail.com">
+        <svg width="28" height="22" viewBox="0 0 28 22" fill="white"><path d="M2 0C.9 0 0 .9 0 2v18c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2H2zm0 2h24v.01L14 12 2 2.01V2zm0 2.99L14 15l12-10.01V20H2V4.99z"/></svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ==================== CANADA ONLINE TUTORING PAGE ==================== -->
+<div class="page" id="page-cot">
+
+  <header class="navbar">
+    <div class="logo-link" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
+    <nav class="nav-links">
+      <a onclick="navigateTo('home')" data-nav="home">Home</a>
+      <a onclick="navigateTo('projects')" data-nav="projects">Projects</a>
+      <a onclick="navigateTo('about')" data-nav="about">About</a>
+      <a class="contact-btn" href="mailto:isabel.g.yuan@gmail.com">Contact</a>
+    </nav>
+  </header>
+
+  <div class="case-study-page">
+    <!-- Hero with background image -->
+    <div class="cot-hero">
+      <img class="cot-hero-bg" src="assets/cot/cot-hero.png" alt="Canada Online Tutoring">
+      <div class="cot-hero-content">
+        <h1>Canada Online Tutoring</h1>
+        <p>UX/UI Website Redesign</p>
+        <a class="view-proto-btn" href="https://www.figma.com/proto/INAsilePMpXAjKVemOWTS7/Canada-Online-Tutoring?node-id=203-100&t=TrhObkcaSaVjp9Y7-1" target="_blank" rel="noopener">
+          <img src="assets/cot/view-prototype-btn1.png" alt="View Prototype">
+        </a>
+      </div>
+    </div>
+
+    <div class="case-study-body">
+      <h2>Company Overview</h2>
+      <p>Canada Online Tutoring is a Toronto-based education company that provides one-on-one online tutoring for students across Canada, from elementary through university levels. They match students with experienced tutors aligned with the Canadian curriculum to support homework, exam preparation, and long-term academic success.</p>
+
+      <div class="callout-box-blue">
+        <h3>Problems with the current design</h3>
+        <ul>
+          <li>The existing website did not clearly communicate the value of the service, making it difficult for users to understand why they should choose it.</li>
+          <li>The user experience was not optimized for conversion, with unclear calls to action and no defined user flow.</li>
+          <li>The visual design felt inconsistent and outdated, reducing credibility and trust with potential clients.</li>
+        </ul>
+      </div>
+
+      <h2>Redesigned Website</h2>
+      <p>Below is a comparison of the current website and the redesigned version. The redesign keeps the existing visual identity, while improving clarity and overall usability. Other key changes include a new events page, a new subject page, a new tutor profile page, and improved registration page architecture.</p>
+
+      <div class="comparison-section">
+        <h3 class="current-pages">Current Page Design</h3>
+        <div class="comparison-grid">
+          <div class="comparison-column">
+            <img src="assets/cot/math-old.png" alt="Current Math Page">
+            <img src="assets/cot/subjects-old.png" alt="Current Subjects Page">
+          </div>
+          <div class="comparison-column">
+            <img src="assets/cot/home-old.png" alt="Current Home Page">
+          </div>
+          <div class="comparison-column">
+            <img src="assets/cot/reg-old.png" alt="Current Registration Page">
+            <img src="assets/cot/log-in-old.png" alt="Current Login Page">
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-section">
+        <h3 class="redesigned-pages">Redesigned Pages</h3>
+        <div class="comparison-grid">
+          <div class="comparison-column">
+            <img src="assets/cot/home-new.png" alt="Redesigned Home Page">
+            <img src="assets/cot/reg-new.png" alt="Redesigned Registration Page">
+            <img src="assets/cot/log-in-new.png" alt="Redesigned Login Page">
+          </div>
+          <div class="comparison-column">
+            <img src="assets/cot/tutor-sample.png" alt="Tutor Profile Page">
+            <img src="assets/cot/events-new.png" alt="Events Page">
+            <img src="assets/cot/sample-event-new.png" alt="Sample Event Page">
+          </div>
+          <div class="comparison-column">
+            <img src="assets/cot/subject-new.png" alt="Redesigned Subject Page">
+          </div>
+        </div>
+      </div>
+
+      <div class="proto-btn-center">
+        <a class="view-proto-btn" href="https://www.figma.com/proto/INAsilePMpXAjKVemOWTS7/Canada-Online-Tutoring?node-id=203-100&t=TrhObkcaSaVjp9Y7-1" target="_blank" rel="noopener">
+          <img src="assets/cot/view-prototype-btn2.png" alt="Check out the prototype here!">
+        </a>
+      </div>
+
+      <h2 class="section-end">Learning Outcomes</h2>
+      <p>Through this project, I learned more about how information hierarchy and visual brand messaging can shape a user's first impression and directly affect conversion. I gained experience designing a website with both user needs and business goals in mind by improving both clarity and conversion.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-logo" onclick="navigateTo('home')">
+      <img src="assets/nav/logo-header.png" alt="IY Logo">
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.linkedin.com/in/isabelyuan" target="_blank" rel="noopener">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="mailto:isabel.g.yuan@gmail.com">
+        <svg width="28" height="22" viewBox="0 0 28 22" fill="white"><path d="M2 0C.9 0 0 .9 0 2v18c0 1.1.9 2 2 2h24c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2H2zm0 2h24v.01L14 12 2 2.01V2zm0 2.99L14 15l12-10.01V20H2V4.99z"/></svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+  // ===== NAVIGATION =====
+  function navigateTo(page, scrollTarget) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+    let targetPage;
+    let scrollTo = null;
+
+    switch(page) {
+      case 'home':
+        targetPage = document.getElementById('page-home');
+        scrollTo = 'home-top';
+        break;
+      case 'projects':
+        targetPage = document.getElementById('page-home');
+        scrollTo = 'projects-section';
+        break;
+      case 'about':
+        targetPage = document.getElementById('page-about');
+        break;
+      case 'loseit':
+        targetPage = document.getElementById('page-loseit');
+        break;
+      case 'cot':
+        targetPage = document.getElementById('page-cot');
+        break;
+      default:
+        targetPage = document.getElementById('page-home');
+    }
+
+    targetPage.classList.add('active');
+
+    // Always scroll to top first, then to target if needed
+    window.scrollTo(0, 0);
+
+    if (scrollTo) {
+      setTimeout(() => {
+        const el = document.getElementById(scrollTo);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 50);
+    }
+
+    // Update active nav links
+    updateNavLinks(page);
+
+    // Reinitialize brush canvas if going home
+    if (page === 'home' || page === 'projects') {
+      setTimeout(initBrushCanvas, 100);
+    }
+  }
+
+  function updateNavLinks(activePage) {
+    document.querySelectorAll('.nav-links a[data-nav]').forEach(a => {
+      a.classList.remove('active-link');
+      const nav = a.getAttribute('data-nav');
+      if (nav === activePage || (activePage === 'projects' && nav === 'projects')) {
+        a.classList.add('active-link');
+      }
+    });
+  }
+
+
+  // ===== INTERACTIVE BRUSH ON HERO =====
+  let brushCanvas, brushCtx;
+  let isDrawing = false;
+  let lastX, lastY;
+
+  function initBrushCanvas() {
+    brushCanvas = document.getElementById('brush-canvas');
+    if (!brushCanvas) return;
+
+    const hero = brushCanvas.parentElement;
+    brushCanvas.width = hero.offsetWidth;
+    brushCanvas.height = hero.offsetHeight;
+    brushCtx = brushCanvas.getContext('2d');
+
+    // Clear canvas
+    brushCtx.clearRect(0, 0, brushCanvas.width, brushCanvas.height);
+
+    // Remove old listeners
+    brushCanvas.removeEventListener('mousedown', onBrushDown);
+    brushCanvas.removeEventListener('mousemove', onBrushMove);
+    brushCanvas.removeEventListener('mouseup', onBrushUp);
+    brushCanvas.removeEventListener('mouseleave', onBrushUp);
+    brushCanvas.removeEventListener('touchstart', onTouchStart);
+    brushCanvas.removeEventListener('touchmove', onTouchMove);
+    brushCanvas.removeEventListener('touchend', onBrushUp);
+
+    // Add listeners
+    brushCanvas.addEventListener('mousedown', onBrushDown);
+    brushCanvas.addEventListener('mousemove', onBrushMove);
+    brushCanvas.addEventListener('mouseup', onBrushUp);
+    brushCanvas.addEventListener('mouseleave', onBrushUp);
+    brushCanvas.addEventListener('touchstart', onTouchStart, { passive: false });
+    brushCanvas.addEventListener('touchmove', onTouchMove, { passive: false });
+    brushCanvas.addEventListener('touchend', onBrushUp);
+  }
+
+  function onBrushDown(e) {
+    isDrawing = true;
+    const rect = brushCanvas.getBoundingClientRect();
+    lastX = e.clientX - rect.left;
+    lastY = e.clientY - rect.top;
+  }
+
+  function onTouchStart(e) {
+    e.preventDefault();
+    isDrawing = true;
+    const rect = brushCanvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    lastX = touch.clientX - rect.left;
+    lastY = touch.clientY - rect.top;
+  }
+
+  function onBrushMove(e) {
+    if (!isDrawing) return;
+    const rect = brushCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    drawBrushStroke(lastX, lastY, x, y);
+    lastX = x;
+    lastY = y;
+  }
+
+  function onTouchMove(e) {
+    e.preventDefault();
+    if (!isDrawing) return;
+    const rect = brushCanvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+    drawBrushStroke(lastX, lastY, x, y);
+    lastX = x;
+    lastY = y;
+  }
+
+  function onBrushUp() {
+    isDrawing = false;
+  }
+
+  function drawBrushStroke(x1, y1, x2, y2) {
+    if (!brushCtx) return;
+
+    // Soft pastel purple/lavender brush, similar to the blur ellipses but slightly darker
+    brushCtx.beginPath();
+    brushCtx.moveTo(x1, y1);
+    brushCtx.lineTo(x2, y2);
+    brushCtx.strokeStyle = 'rgba(195, 175, 230, 0.12)';
+    brushCtx.lineWidth = 80;
+    brushCtx.lineCap = 'round';
+    brushCtx.lineJoin = 'round';
+    brushCtx.filter = 'blur(25px)';
+    brushCtx.stroke();
+
+    // Second pass for more visible core
+    brushCtx.beginPath();
+    brushCtx.moveTo(x1, y1);
+    brushCtx.lineTo(x2, y2);
+    brushCtx.strokeStyle = 'rgba(210, 190, 245, 0.08)';
+    brushCtx.lineWidth = 120;
+    brushCtx.lineCap = 'round';
+    brushCtx.lineJoin = 'round';
+    brushCtx.filter = 'blur(40px)';
+    brushCtx.stroke();
+
+    // Reset filter
+    brushCtx.filter = 'none';
+  }
+
+
+  // ===== RESIZE HANDLER =====
+  window.addEventListener('resize', () => {
+    if (document.getElementById('page-home').classList.contains('active')) {
+      initBrushCanvas();
+    }
+  });
+
+
+  // ===== INIT =====
+  document.addEventListener('DOMContentLoaded', () => {
+    initBrushCanvas();
+  });
+</script>
 
 </body>
 </html>
