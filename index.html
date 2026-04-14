@@ -33,6 +33,7 @@
       display: none;
       min-height: 100vh;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
     .page.active {
@@ -45,13 +46,10 @@
       justify-content: space-between;
       align-items: center;
       padding: 24px 48px;
-      position: sticky;
       top: 0;
-      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       z-index: 1000;
-      border-bottom: 1px solid rgba(0,0,0,0.04);
     }
 
     .navbar .logo-link {
@@ -109,57 +107,61 @@
     /* ===== HERO SECTION (HOME) ===== */
     .hero-section {
       position: relative;
-      min-height: calc(100vh - 80px);
+      min-height: 80vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 60px 80px 80px;
+      padding: 80px 80px 60px;
     }
 
-    /* Background blur ellipses - recreated from Figma */
+    /* Background blur ellipses - page-level so they bleed into projects */
     .hero-bg {
       position: absolute;
-      top: -150px;
-      left: -150px;
-      right: -150px;
-      bottom: -150px;
+      top: -100px;
+      left: -200px;
+      right: -200px;
+      bottom: -400px;
       pointer-events: none;
-      overflow: visible;
       z-index: 0;
     }
 
     .blur-ellipse {
       position: absolute;
       border-radius: 50%;
-      filter: blur(120px);
+    }
+
+  /* Ellipse 1 - small, bottom-left, solid purple */
+    .blur-ellipse-1 {
+      width: 200px;
+      height: 200px;
+      bottom: 50%;
+      left: 20%;
+      background: #474194;
+      filter: blur(100px);
       opacity: 0.65;
     }
 
-    /* Ellipse 1 - top-left, pastel pink/peach */
-    .blur-ellipse-1 {
-      width: 495px;
-      height: 495px;
-      top: -80px;
-      left: -50px;
-      background: linear-gradient(135deg, #F6CAE9 10%, #D3C2FF 41%, #B5D6F9 58%, #F6CAE9 100%);
-    }
-
-    /* Ellipse 2 - center-top, lavender/blue */
+    /* Ellipse 2 - large center, gradient, goes half off top */
     .blur-ellipse-2 {
-      width: 495px;
-      height: 495px;
-      top: -120px;
-      left: 30%;
-      background: linear-gradient(135deg, #B8DAF5 6%, #D3C2FF 31%, #E9C4E5 80%, #C5DFF4 100%);
-    }
-
-    /* Ellipse 3 - right side, soft purple/green */
-    .blur-ellipse-3 {
       width: 881px;
       height: 881px;
-      top: -200px;
-      right: -200px;
+      top: -300px;
+      left: 50%;
+      transform: translateX(-55%);
+      background: linear-gradient(135deg, #B8DAF5 6%, #D3C2FF 31%, #E9C4E5 80%, #C5DFF4 100%);
+      filter: blur(80px);
+      opacity: 0.65;
+    }
+
+    /* Ellipse 3 - medium, bottom-right, behind Lose It card */
+    .blur-ellipse-3 {
+      width: 495px;
+      height: 495px;
+      bottom: 15%;
+      right: 5%;
       background: linear-gradient(135deg, #F6CAE9 10%, #D3C2FF 41%, #B5D6F9 58%, #F6CAE9 100%);
+      filter: blur(140px);
+      opacity: 0.65;
     }
 
     /* Interactive brush canvas */
@@ -182,7 +184,7 @@
     }
 
     .hero-content h1 {
-      font-size: 64px;
+      font-size: 56px;
       font-weight: 800;
       color: #1a1a2e;
       margin-bottom: 20px;
@@ -303,14 +305,14 @@
     /* ===== ABOUT PAGE ===== */
     .about-hero {
       position: relative;
-      overflow: visible;
+      overflow: hidden;
     }
 
     .about-hero .hero-bg {
       position: absolute;
-      top: -150px; left: -150px; right: -150px; bottom: -150px;
+      top: 0; left: 0; right: 0; bottom: 0;
       pointer-events: none;
-      overflow: visible;
+      overflow: hidden;
       z-index: 0;
     }
 
@@ -318,6 +320,8 @@
       position: relative;
       z-index: 2;
       padding: 80px 80px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
     .about-top {
@@ -332,7 +336,6 @@
       min-width: 320px;
       height: 400px;
       object-fit: cover;
-      border-radius: 8px;
     }
 
     .about-intro h1 {
@@ -350,9 +353,11 @@
     }
 
     .about-bio {
-      padding: 0 80px 80px;
+      padding: 0 80px 40px;
       position: relative;
       z-index: 2;
+      max-width: 1100px;
+      margin: 0 auto;
     }
 
     .about-bio p {
@@ -685,7 +690,7 @@
       font-size: 22px;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 8px;
       color: #888;
     }
 
@@ -701,7 +706,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-      margin-bottom: 32px;
+      margin-bottom: 0px;
       align-items: start;
     }
 
@@ -713,7 +718,7 @@
     .comparison-column {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
 
     .comparison-column img {
@@ -743,7 +748,6 @@
       .hero-section {
         padding: 60px 24px 40px;
         min-height: auto;
-        overflow: visible;
       }
 
       .hero-content h1 {
@@ -845,6 +849,11 @@
 
 <!-- ==================== HOME + PROJECTS PAGE ==================== -->
 <div class="page active" id="page-home">
+      <div class="hero-bg">
+      <div class="blur-ellipse blur-ellipse-1"></div>
+      <div class="blur-ellipse blur-ellipse-2"></div>
+      <div class="blur-ellipse blur-ellipse-3"></div>
+    </div>
 
   <!-- NAVBAR -->
   <header class="navbar">
@@ -861,11 +870,6 @@
 
   <!-- HERO -->
   <section class="hero-section" id="home-top">
-    <div class="hero-bg">
-      <div class="blur-ellipse blur-ellipse-1"></div>
-      <div class="blur-ellipse blur-ellipse-2"></div>
-      <div class="blur-ellipse blur-ellipse-3"></div>
-    </div>
     <canvas id="brush-canvas"></canvas>
     <div class="hero-content">
       <h1>Hi, I'm Isabel 👋</h1>
@@ -919,7 +923,12 @@
 
 
 <!-- ==================== ABOUT PAGE ==================== -->
-<div class="page" id="page-about">
+<div class="page" id="page-about" style="position: relative;">
+    <div class="hero-bg" style="bottom: 75px;">
+    <div class="blur-ellipse blur-ellipse-1"></div>
+    <div class="blur-ellipse blur-ellipse-2"></div>
+    <div class="blur-ellipse blur-ellipse-3"></div>
+  </div>
 
   <header class="navbar">
     <div class="logo-link" onclick="navigateTo('home')">
@@ -933,27 +942,16 @@
     </nav>
   </header>
 
-  <div class="about-hero">
-    <div class="hero-bg">
-      <div class="blur-ellipse blur-ellipse-1"></div>
-      <div class="blur-ellipse blur-ellipse-2"></div>
-      <div class="blur-ellipse blur-ellipse-3"></div>
-    </div>
-
     <div class="about-content">
       <div class="about-top">
         <img class="about-photo" src="assets/about/Isabel.png" alt="Isabel Yuan">
         <div class="about-intro">
           <h1>Hi, I'm Isabel Yuan 👋</h1>
-          <p class="subtitle">I am a business and computer science student who loves all things design and tech.</p>
+          <p style="font-size: 40px;">I am a business and computer science student who loves all things design and tech.</p>
         </div>
       </div>
     </div>
-  </div>
-
   <div class="about-bio">
-    <br>
-    <br>
     <p>I graduated with an HBA from Ivey Business School in 2025 and am on my way to completing my BSc in Computer Science at Western University. I have worked as an accountant at BDO Canada and as a finance product analyst at IRCC, where I gained valuable skills in data analysis and translating business needs into requirements for developers. While I enjoyed working in both roles, I found myself looking for something more creative. Now, I am starting my journey into UX and product design!</p>
 
     <p>I was born and raised in Ottawa, Ontario surrounded by national parks and ski hills, and spent much of my childhood outdoors. I also love baking, woodworking, fashion, blueprinting, hiking, running, and tennis.</p>
@@ -1181,6 +1179,11 @@
 
       <div class="comparison-section">
         <h3 class="redesigned-pages">Redesigned Pages</h3>
+        <div class="proto-btn-center" style="margin: 8px 0;">
+        <a class="view-proto-btn" href="https://www.figma.com/proto/INAsilePMpXAjKVemOWTS7/Canada-Online-Tutoring?node-id=203-100&t=TrhObkcaSaVjp9Y7-1" target="_blank" rel="noopener" style="margin-bottom: 8px;">
+          <img src="assets/cot/view-prototype-btn2.png" alt="Check out the prototype here!">
+        </a>
+      </div>
         <div class="comparison-grid">
           <div class="comparison-column">
             <img src="assets/cot/home-new.png" alt="Redesigned Home Page">
@@ -1196,12 +1199,6 @@
             <img src="assets/cot/subject-new.png" alt="Redesigned Subject Page">
           </div>
         </div>
-      </div>
-
-      <div class="proto-btn-center">
-        <a class="view-proto-btn" href="https://www.figma.com/proto/INAsilePMpXAjKVemOWTS7/Canada-Online-Tutoring?node-id=203-100&t=TrhObkcaSaVjp9Y7-1" target="_blank" rel="noopener">
-          <img src="assets/cot/view-prototype-btn2.png" alt="Check out the prototype here!">
-        </a>
       </div>
 
       <h2 class="section-end">Learning Outcomes</h2>
